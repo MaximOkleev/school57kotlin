@@ -3,12 +3,12 @@ package ru.tbank.education.school.lesson1
 /**
  * Метод для вычисления простых арифметических операций.
  */
-fun calculate(a: Double, b: Double, operation: OperationType): Double? {
+fun calculate(a: Double, b: Double, operation: OperationType = OperationType.ADD): Double? {
     return when (operation) {
         OperationType.ADD -> a + b
         OperationType.SUBTRACT -> a - b
         OperationType.MULTIPLY -> a * b
-        OperationType.DIVIDE -> if (b != 0.0) a / b else null
+        OperationType.DIVIDE -> b.takeIf { it != 0.0 }?.let { a / it }
     }
 }
 
@@ -30,11 +30,12 @@ fun String.calculate(): Double? {
         "-" -> OperationType.SUBTRACT
         "*" -> OperationType.MULTIPLY
         "/" -> OperationType.DIVIDE
-        else -> return null
+        else -> OperationType.ADD
     }
 
     return calculate(a, b, operation)
 }
+
 
 fun main() {
 
