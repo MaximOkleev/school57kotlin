@@ -121,7 +121,6 @@ fun main() {
 
     println("\n=== GET ===")
     client.getUser(user.username)
-
     println("\n=== PUT ===")
     val updatedUser = user.copy(firstName = "Максимка")
     client.updateUser(user.username, updatedUser)
