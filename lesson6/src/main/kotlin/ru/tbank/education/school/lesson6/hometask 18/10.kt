@@ -115,7 +115,6 @@ fun main() {
         phone = "+34612345678",
         userStatus = 1
     )
-
     println("=== POST ===")
     client.createUser(user)
 
