@@ -125,7 +125,6 @@ fun main() {
     println("\n=== PUT ===")
     val updatedUser = user.copy(firstName = "Максимка")
     client.updateUser(user.username, updatedUser)
-
     println("\n=== DELETE ===")
     client.deleteUser(user.username)
 }
