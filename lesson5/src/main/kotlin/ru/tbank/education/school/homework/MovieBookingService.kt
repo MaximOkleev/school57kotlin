@@ -64,7 +64,6 @@ class MovieBookingService(
             bookings.remove(movieId)
         }
     }
-
     /**
      * Проверяет, забронировано ли место
      *

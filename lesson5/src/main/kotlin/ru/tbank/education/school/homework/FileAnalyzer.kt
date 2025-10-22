@@ -139,7 +139,6 @@ class NIOFileAnalyzer : FileAnalyzer {
         } catch (e: Exception) {
             println("Неожиданная ошибка: ${e.message}")
         }
-
         return false
     }
 }
