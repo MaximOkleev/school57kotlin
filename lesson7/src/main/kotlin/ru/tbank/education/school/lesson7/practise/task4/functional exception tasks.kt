@@ -20,7 +20,13 @@ package ru.tbank.education.school.lesson7.practise.task4
  * println(r2.isFailure) // true
  * ```
  */
-fun parseIntSafe(value: String): Result<Int> = TODO()
+fun parseIntSafe(value: String): Result<Int> = runCatching { value.toInt() }
+//    try{
+//    Result.success(value.toInt())
+//}
+//catch (e: Throwable) {
+//    Result.failure(e)
+//}
 
 
 /**
@@ -39,7 +45,7 @@ fun parseIntSafe(value: String): Result<Int> = TODO()
  * println(parseWithDefault("abc", 0)) // 0
  * ```
  */
-fun parseWithDefault(input: String, default: Int): Int = TODO()
+fun parseWithDefault(input: String, default: Int): Int = runCatching {input.toInt() }.getOrElse{default }
 
 
 /**
@@ -50,11 +56,13 @@ fun parseWithDefault(input: String, default: Int): Int = TODO()
  *  - Если происходит ошибка, печатает сообщение:
  *    "Ошибка деления: ${e.message}"
  *  - Возвращает `Result` (не бросает исключение).
- *
  * Пример:
  * ```
  * safeDivideLogged(10, 0)
  * // Выводит: Ошибка деления: / by zero
  * ```
- */
-fun safeDivideLogged(a: Int, b: Int): Result<Double> = TODO()
+*/
+fun safeDivideLogged(a: Int, b: Int): Result<Double> {
+    return runCatching { a.toDouble() / b }
+        .onFailure { e -> println("Ошибка деления: ${e.message}") }
+}
