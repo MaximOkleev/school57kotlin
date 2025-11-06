@@ -1,5 +1,8 @@
 package ru.tbank.education.school.lesson7.practise.task2
 
+import java.time.LocalDateTime
+import java.util.LinkedHashMap
+
 /**
  * Реализуй декоратор limitRate(intervalMs: Long, f: (A) -> R): (A) -> R?
  *
@@ -20,9 +23,17 @@ package ru.tbank.education.school.lesson7.practise.task2
  * printMessage("C") // выполняется
  */
 fun <A, R> limitRate(intervalMs: Long, f: (A) -> R): (A) -> R? {
-    TODO()
+    var lastCall: LocalDateTime? = null
+    return { a: A ->
+        val now = LocalDateTime.now()
+        if (lastCall == null || lastCall!!.plusNanos(intervalMs * 1_000_000).isBefore(now)) {
+            lastCall = now
+            f(a)
+        } else {
+            null
+        }
+    }
 }
-
 
 /**
  * Реализуй декоратор safeCall(f: (A) -> R): (A) -> Result<R>
@@ -40,7 +51,13 @@ fun <A, R> limitRate(intervalMs: Long, f: (A) -> R): (A) -> R? {
  * println(safeDivide(0))  // Failure(java.lang.ArithmeticException: / by zero)
  */
 fun <A, R> safeCall(f: (A) -> R): (A) -> Result<R> {
-    TODO()
+    return { a: A ->
+        try {
+            Result.success(f(a))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
 
 /**
@@ -62,9 +79,13 @@ fun <A, R> safeCall(f: (A) -> R): (A) -> Result<R> {
  * 15
  */
 fun <A, R> logCalls(name: String, f: (A) -> R): (A) -> R {
-    TODO()
+    return { a: A ->
+        println("[$name] вызвана с аргументом: $a")
+        val result = f(a)
+        println("[$name] вернула результат: $result")
+        result
+    }
 }
-
 
 /**
  * Ретрай-обёртка.
@@ -81,7 +102,21 @@ fun <A, R> logCalls(name: String, f: (A) -> R): (A) -> R {
  * println(safe()) // ok
  */
 fun <T> retry(times: Int, f: () -> T): () -> T {
-    TODO()
+    return {
+        var result: T? = null
+        var lastException: Exception? = null
+
+        for (attempt in 1..times) {
+            try {
+                result = f()
+                break
+            } catch (e: Exception) {
+                lastException = e
+            }
+        }
+
+        result ?: throw lastException ?: Exception("All attempts failed")
+    }
 }
 
 /**
@@ -101,7 +136,13 @@ fun <T> retry(times: Int, f: () -> T): () -> T {
  * println(slowFn(10))
  */
 fun <A, R> timed(name: String, f: (A) -> R): (A) -> R {
-    TODO()
+    return { a: A ->
+        val startTime = System.currentTimeMillis()
+        val result = f(a)
+        val endTime = System.currentTimeMillis()
+        println("[$name] выполнено за ${endTime - startTime} мс")
+        result
+    }
 }
 
 /**
@@ -124,5 +165,13 @@ fun <A, R> timed(name: String, f: (A) -> R): (A) -> R {
  *
  */
 fun <A, R> memoizeWith(capacity: Int, f: (A) -> R): (A) -> R {
-    TODO()
+    val cache = object : LinkedHashMap<A, R>(capacity, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<A, R>?): Boolean {
+            return size > capacity
+        }
+    }
+
+    return { a: A ->
+        cache.getOrPut(a) { f(a) }
+    }
 }
