@@ -45,7 +45,6 @@ class MovieBookingService(
     fun cancelBooking(movieId: String, seat: Int) {
         TODO("Реализовать логику")
     }
-
     /**
      * Проверяет, забронировано ли место
      *
