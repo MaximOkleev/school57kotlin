@@ -2,6 +2,7 @@ package ru.tbank.education.school.lesson8.homework.library
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 
@@ -89,7 +90,6 @@ class LibraryServiceTest {
         val fine = library.calculateOverdueFine("978-0-441-17271-9", daysOverdue = 15)
         assertEquals(300, fine)
     }
-
     @Test
     @DisplayName("Читатель с непогашенным штрафом не может брать книги")
     fun cannotBorrowWithOutstandingFine() {
