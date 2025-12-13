@@ -9,7 +9,6 @@ import kotlin.reflect.jvm.jvmErasure
 object DocumentationGenerator {
     fun generateDoc(obj: Any): String {
         val kClass = obj::class
-
         val classDoc = kClass.findAnnotation<DocClass>()
             ?: return "Нет документации для класса."
 
