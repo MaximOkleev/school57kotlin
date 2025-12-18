@@ -20,7 +20,6 @@ class BankAccount(val id: String, var balance: Int) {
     fun transfer(to: BankAccount, amount: Int) {
         val first: BankAccount
         val second: BankAccount
-
         if (this.id < to.id) {
             first = this
             second = to
