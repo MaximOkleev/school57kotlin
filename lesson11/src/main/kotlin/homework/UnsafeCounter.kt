@@ -22,7 +22,6 @@ class UnsafeCounter {
             value++
         }
     }
-
     fun getValue(): Int = value
 
     suspend fun runConcurrentIncrements(

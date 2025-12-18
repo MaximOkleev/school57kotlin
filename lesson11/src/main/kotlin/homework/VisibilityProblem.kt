@@ -9,7 +9,6 @@
 class VisibilityProblem {
     @Volatile
     private var running = true
-
     /**
      * Создает и возвращает поток writer.
      * Поток выполняет некоторую работу, затем меняет флаг running на false.
