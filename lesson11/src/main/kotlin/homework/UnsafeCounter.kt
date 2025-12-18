@@ -3,7 +3,6 @@ package homework
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 
@@ -15,10 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger
 class UnsafeCounter {
 
     private var value = 0
+    private val mutex = Mutex()
 
     suspend fun increment() {
         delay(1)
-        value++
+        mutex.withLock {
+            value++
+        }
     }
 
     fun getValue(): Int = value
@@ -37,7 +39,6 @@ class UnsafeCounter {
         }
 
         jobs.joinAll()
-
         getValue()
     }
 }
